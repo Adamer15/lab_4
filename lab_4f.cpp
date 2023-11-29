@@ -11,13 +11,13 @@ const int random_range = 100; // zakrees liczb pseudo losowych od 0 do random_ra
 int t[size]; // tablica liczb pseudo losowych
 int temp[random_range] = {0}; // tablica sluzaca zliczaniu liczby wystapien poszczegolnych wartosci w tablicy t[]
 vector<int>mody; // kontener przechowujacy wszystkie mody tablicy t[]
-void CreateRandomArray(int *t, const int size) // wypelnianie t[] liczbami pseudo losowymi
+void CreateRandomArray(int t[], const int size) // wypelnianie t[] liczbami pseudo losowymi
 {
     srand(time(NULL));
     for (int i = 0; i < size; i++)
         t[i] = rand() % random_range;
 }
-void printArray(int *t, const int size) // podawanie na strumien wyjsca wartosci tablicy t[]
+void printArray(int t[], const int size) // podawanie na strumien wyjsca wartosci tablicy t[]
 {
     sort(t, t + size);
     for (int i = 0; i < size; i++)
@@ -26,7 +26,7 @@ void printArray(int *t, const int size) // podawanie na strumien wyjsca wartosci
 }
 // t[] - tablica z losowymi wartosciami
 // temp[] - tablica z liczba wystapien liczb w t[]
-void moda(int *t, int *temp, const int size, const int random_range)
+void moda(int t[], int *temp, const int size, const int random_range, vector<int>& mody)
 {
     for (int i = 0; i < size; i++){
         temp[t[i]]++;
@@ -47,7 +47,7 @@ void moda(int *t, int *temp, const int size, const int random_range)
     }
     sort(mody.begin(), mody.end());
 }
-void printMody() // wypisywanie zawartosci wektora przechowujacego mody tablicy t[]
+void printMody(vector<int>& mody) // wypisywanie zawartosci wektora przechowujacego mody tablicy t[]
 {
     cout << "MODY: ";
     for (int i = 0; i < mody.size(); i++)
@@ -66,14 +66,14 @@ void removeDuplicates(vector<int>& mody, size_t i = 0) { // rekurencyjna funkcja
         removeDuplicates(mody, i);
     }
 }
-double aritmAvg() // funkcja do obliczania sredniej arytmetycznej
+double aritmAvg(int t[], const int size) // funkcja do obliczania sredniej arytmetycznej
 {
     double sum = 0;
     for (int i = 0; i < size; i++)
         sum+=t[i];
     return sum/size;
 }
-double median(int *t, const int size) // funkcja wyznacza mediane na tablicy t[]
+double median(int t[], const int size) // funkcja wyznacza mediane na tablicy t[]
 {
     sort(mody.begin(), mody.end());
     if (size % 2 == 0)
@@ -88,10 +88,10 @@ int main ()
     CreateRandomArray(t, size);
     printArray(t, size); // funkcja testowa
 //    cout << endl;
-    moda(t, temp, size, random_range);
+    moda(t, temp, size, random_range, mody);
 //    removeDuplicates(mody); // ostatecznie chyba nie potrzebna funkcja do wywolania
-    printMody();
-    cout << "SREDNIA ARYTMETYCZNA: " << aritmAvg() << endl << "MEDIANA: " << median(t, size) << endl;
+    printMody(mody);
+    cout << "SREDNIA ARYTMETYCZNA: " << aritmAvg(t, size) << endl << "MEDIANA: " << median(t, size) << endl;
 
     return 0;
 }
